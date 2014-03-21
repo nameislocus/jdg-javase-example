@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<infinispan xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="urn:infinispan:config:5.2 http://www.infinispan.org/schemas/infinispan-config-5.2.xsd"
+            xmlns="urn:infinispan:config:5.2">
+
+   <global>
+      <transport clusterName="opennaru">
+         <properties>
+            <property name="configurationFile" value="jgroups.xml"/>
+         </properties>
+      </transport>
+      <globalJmxStatistics enabled="true" />
+      
+   </global>
+
+   <!-- *************************** -->
+   <!-- Default "template" settings -->
+   <!-- *************************** -->
+   <default>
+      <transaction transactionManagerLookupClass="org.infinispan.transaction.lookup.GenericTransactionManagerLookup"/>
+      <locking concurrencyLevel="1000" useLockStriping="false"/>
+
+      <unsafe unreliableReturnValues="true" />
+      <jmxStatistics enabled="true"/>
+      <invocationBatching enabled="true"/>
+      
+      <clustering mode="distribution">
+      
+         <sync replTimeout="200000"/>
+<!--     <async/> --> 
+         <hash numOwners="2" numSegments="40"/>
+         <l1 enabled="true" lifespan="600000"/>
+      </clustering>
+   </default>
+
+
+   <!-- ************************************** -->
+   <!-- Individually configured "named" caches -->
+   <!-- ************************************** -->
+   <namedCache name="testCache">
+      <jmxStatistics enabled="true"/>
+   </namedCache>   
+   
+</infinispan>
